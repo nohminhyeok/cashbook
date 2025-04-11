@@ -10,27 +10,23 @@
 	    return;
 	}
 
-	
 	String searchWord = request.getParameter("searchWord");
 	if(searchWord == null) {
 		searchWord = "";
 	}
 	System.out.println("searchWord : "+searchWord);
-	
-	
+
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 
-	
 	Category category = new Category();
 	CategoryDao categoryDao = new CategoryDao();
 
-	
 	Paging p = new Paging();
 	p.setCurrentPage(currentPage);
-	p.setRowPerPage(5);
+	p.setRowPerPage(10);
 	int rowPerPage = p.getRowPerPage();
 	int totalCnt = categoryDao.totalCountCategory(searchWord);
 	int lastPage = totalCnt / rowPerPage;
@@ -38,8 +34,6 @@
 		lastPage = lastPage + 1;
 	}
 
-	
-	categoryDao.totalCountCategory(searchWord);
 	ArrayList<Category> list = categoryDao.selectCategory(p,searchWord);
 %>
 <!DOCTYPE html>
@@ -48,13 +42,18 @@
 <meta charset="UTF-8">
 <title>카테고리 관리</title>
 <style>
-    /* 기본 페이지 스타일 */
     body {
-        background-color: #f5f5f5; /* 부드러운 회색 배경 */
+        background-color: #f5f5f5;
         font-family: 'Arial', sans-serif;
         color: #333;
         margin: 0;
         padding: 0;
+    }
+
+    .top-right {
+        position: absolute;
+        top: 20px;
+        right: 30px;
     }
 
 	h1 {
@@ -62,7 +61,7 @@
 	    font-size: 2.5em;
 	    margin-top: 50px;
 	    font-weight: 600;
-	    text-align: center; /* 제목을 수평으로 중앙 정렬 */
+	    text-align: center;
 	}
 
     table {
@@ -82,7 +81,7 @@
     }
 
     th {
-        background-color: #4CAF50; /* 그린 색상 */
+        background-color: #4CAF50;
         color: white;
     }
 
@@ -97,7 +96,7 @@
     a {
         text-decoration: none;
         font-size: 1.2em;
-        color: #4CAF50; /* 그린 색상 */
+        color: #4CAF50;
         padding: 10px 20px;
         border-radius: 5px;
         background-color: #ffffff;
@@ -167,6 +166,10 @@
 </style>
 </head>
 <body>
+	<div class="top-right">
+		<a href="/cashbook/index.jsp">홈으로</a>
+	</div>
+
 	<h1>카테고리 관리</h1>
 	<table>
 		<tr>
@@ -182,7 +185,7 @@
 		%>
 			<tr>
 				<td><%=c.getCategory_no()%></td>
-				<td style="color:<%= c.getKind().equals("수입") ? "red" : "blue" %>; font-weight: bold;">
+				<td style="color:<%= c.getKind().equals("수입") ? "blue" : "red" %>; font-weight: bold;">
 					<%= c.getKind() %>
 				</td>
 				<td><%=c.getTitle()%></td>

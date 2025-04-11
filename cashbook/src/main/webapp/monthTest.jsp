@@ -1,18 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dto.*" %>
 <%@ page import="model.*" %>
-<%@ page import="java.util.Calendar" %>	
+<%@ page import="java.util.*" %>
 <%
-    String id = (String) session.getAttribute("adminId");
-    if(id == null) { 
-        response.sendRedirect("/cashbook/loginForm.jsp");
-        return;
-    }
-
     Calendar firstDate = Calendar.getInstance();
 
     String targetYear = request.getParameter("targetYear");
     String targetMonth = request.getParameter("targetMonth");
+/*
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    String todayDate = sdf.format(Calendar.getInstance().getTime());
+    System.out.println("todayDate : " +todayDate);
+*/    
 
     if(targetMonth == null || targetYear == null){
         targetYear = String.valueOf(firstDate.get(Calendar.YEAR));
@@ -52,8 +51,14 @@
         prevMonth--;
     }
 
+    
     String[] monthNames = { "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" };
     String currentMonthLabel = monthNames[Integer.parseInt(targetMonth)];
+    
+    Cash cash = new Cash();
+    CashDao cashDao = new CashDao();
+
+   	ArrayList<Cash> list = cashDao.selectCashListByMonth(targetYear, targetMonth);
 %>
 
 <!DOCTYPE html>
@@ -77,30 +82,51 @@
         <th>금</th>
         <th>토</th>
     </tr>
-    <tr>
-        <%
-            for(int c = 1; c <= totalCell; c++) {
-                if(c - startBlank < 1 || c - startBlank > lastDate) {
-        %>
-                    <td>&nbsp;</td>
-        <%
-                } else {
-        %>
-                    <td>
-                    	<a href="/cashbook/cashOne.jsp">
-                    		<%= c - startBlank %>
-                    	</a>
-                    </td>
-        <%
-                }
-                if(c % 7 == 0) {
-        %>
-    </tr><tr>
-        <%
+<tr>
+<%
+    for (int c = 1; c <= totalCell; c++) {
+        if (c - startBlank < 1 || c - startBlank > lastDate) {
+%>
+        <td>&nbsp;</td>
+<%
+        } else {
+            int day = c - startBlank;
+            String formattedMonth = String.format("%02d", Integer.parseInt(targetMonth) + 1); // 0~11 → 01~12
+            String formattedDay = String.format("%02d", day);
+            String fullDate = targetYear + "-" + formattedMonth + "-" + formattedDay;
+
+            // 날짜에 해당하는 cash 내역 출력
+            ArrayList<Cash> dayCashList = new ArrayList<>();
+            for (Cash cs : list) {
+                if (cs.getCash_date().equals(fullDate)) {
+                    dayCashList.add(cs);
                 }
             }
-        %>
-    </tr>
+%>
+        <td valign="top">
+            <a href="/cashbook/cashByDate.jsp?fullDate=<%=fullDate%>">
+                <strong><%= day %></strong>
+            </a><br>
+<%
+            for (Cash cs : dayCashList) {
+%>
+            <div style="font-size: 10px; color: <%= cs.getColor() %>;">
+                <%= cs.getMemo() %> (<%= cs.getAmount() %>)
+            </div>
+<%
+            }
+%>
+        </td>
+<%
+        }
+        if (c % 7 == 0) {
+%>
+</tr><tr>
+<%
+        }
+    }
+%>
+</tr>
 </table>
 
 <p>

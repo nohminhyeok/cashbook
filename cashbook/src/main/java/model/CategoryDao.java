@@ -130,13 +130,14 @@ public class CategoryDao {
 	    return rowsAffected; // 삭제된 행 수 반환
 	}
 	
-	public boolean isDuplicateCategory(String kind, String title) throws SQLException {
-	    String sql = "SELECT COUNT(*) FROM category WHERE kind = ? AND title = ?";
-	    Connection conn = null;
+	public boolean isDuplicateCategory(String kind, String title) throws SQLException, ClassNotFoundException {
+	    Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = null;
 	    PreparedStatement stmt = null;
 	    ResultSet rs = null;
-
 	    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+
+	    String sql = "SELECT COUNT(*) FROM category WHERE kind = ? AND title = ?";
 	    stmt = conn.prepareStatement(sql);
 	    stmt.setString(1, kind);
 	    stmt.setString(2, title);
@@ -148,10 +149,31 @@ public class CategoryDao {
 	    }
 
 	    // 자원 수동 해제
-	    rs.close();
 	    stmt.close();
 	    conn.close();
 
 	    return result;
 	}
+	
+	public ArrayList<Category> selectCategoryListBykind(String kind) throws SQLException, ClassNotFoundException{
+		ArrayList<Category>list = new ArrayList<>();
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = null;
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+	    PreparedStatement stmt = null;
+	    ResultSet rs = null;
+	    String sql = "select category_no, title from category where kind = ?";
+	    stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, kind);
+	    rs = stmt.executeQuery();
+	    while(rs.next()) {
+	    	Category c = new Category();
+	    	c.setCategory_no(rs.getInt("category_no"));
+	    	c.setTitle(rs.getString("title"));
+	    	list.add(c);
+	    }
+	    	
+	    return null;
+	}
+	
 }
