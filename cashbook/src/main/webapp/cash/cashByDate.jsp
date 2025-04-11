@@ -98,7 +98,7 @@
 <body>
     <h1>지출 상세페이지</h1>
 
-    <a href="/cashbook/insertCashForm.jsp?fullDate=<%=fullDate%>" class="button-link">작성하기</a>
+    <a href="/cashbook/cash/insertCashForm.jsp?fullDate=<%=fullDate%>" class="button-link">작성하기</a>
 
     <table>
         <tr>
@@ -112,7 +112,11 @@
             for(Cash c : list){
         %>
         <tr>
-            <td><%=c.getCash_no()%></td>
+            <td>
+       			<a href="/cashbook/cash/cashOne.jsp?cash_no=<%=c.getCash_no()%>&fullDate=<%=fullDate%>">
+       	     		<%=c.getCash_no()%>
+		        </a>
+            </td>
             <td><%= categoryMap.get(c.getCategory_no()) %></td>
             <td><%=c.getCash_date()%></td>
             <td><%=c.getAmount()%></td>

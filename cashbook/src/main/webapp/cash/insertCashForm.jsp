@@ -104,7 +104,7 @@
 
 <div class="container">
     <h1>수입/지출 선택</h1>
-    <form method="get" action="/cashbook/insertCashForm.jsp">
+    <form method="get" action="/cashbook/cash/insertCashForm.jsp">
         <input type="hidden" name="fullDate" value="<%=fullDate%>">
         <label for="kind">종류 선택</label>
         <select name="kind" id="kind">
@@ -118,7 +118,7 @@
     <hr>
 
     <h1>CASH 이력 추가</h1>
-    <form method="get" action="/cashbook/insertCashAction.jsp">
+    <form method="get" action="/cashbook/cash/insertCashAction.jsp">
         <input type="hidden" name="fullDate" value="<%=fullDate%>">
         <input type="hidden" name="category_no" value="<%=category_no%>">
 

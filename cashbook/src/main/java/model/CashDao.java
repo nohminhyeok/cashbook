@@ -136,4 +136,75 @@ public class CashDao {
 		}
 		conn.close();
 	}
+	
+	public ArrayList<Cash> selectCashByNo(int cash_no) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook","root","java1234");
+
+		String sql = "SELECT * FROM cash where cash_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, cash_no);
+
+		ResultSet rs = stmt.executeQuery();
+
+		ArrayList<Cash> list = new ArrayList<>();
+		while(rs.next()) {
+			Cash c = new Cash();
+			c.setCash_no(rs.getInt("cash_no"));
+			c.setCategory_no(rs.getInt("category_no"));
+			c.setCash_date(rs.getString("cash_date"));
+			c.setAmount(rs.getInt("amount"));
+			c.setMemo(rs.getString("memo"));
+			c.setColor(rs.getString("color"));
+			c.setCreatedate(rs.getString("createdate"));
+			c.setUpdatedate(rs.getString("updatedate"));
+			list.add(c);
+		}
+		conn.close();
+		return list;
+	}
+	
+	public Cash updateCash(String cash_date, int amount, String memo, String color, int cash_no) throws ClassNotFoundException, SQLException {
+		Cash cash = new Cash();
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook","root","java1234");
+
+		String sql = "update cash set cash_date = ?, amount = ?, memo = ?, color = ? where cash_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, cash_date);
+		stmt.setInt(2, amount);
+		stmt.setString(3, memo);
+		stmt.setString(4, color);
+		stmt.setInt(5, cash_no);
+
+		int rowsAffected = stmt.executeUpdate();
+		
+		if(rowsAffected > 0) {
+			cash.setCash_date(cash_date);
+			cash.setAmount(amount);
+			cash.setMemo(memo);
+			cash.setColor(color);
+		}
+		
+		stmt.close();
+		conn.close();
+		return cash;
+	}
+	
+	public int deleteCash(int cash_no) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook","root","java1234");
+		
+		String sql = "delete from cash where cash_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, cash_no);
+		
+		int rowsAffected = stmt.executeUpdate();
+	    
+	    // 자원 반납
+	    stmt.close();
+	    conn.close();
+	    
+	    return rowsAffected; // 삭제된 행 수 반환
+	}
 }

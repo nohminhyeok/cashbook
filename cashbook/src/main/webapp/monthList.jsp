@@ -146,6 +146,10 @@
     a:hover {
         color: #1d6fa5;
     }
+    td:hover {
+    background-color: #f0f0f0; /* 연한 회색 */
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -185,7 +189,7 @@
             }
 %>
         <td valign="top">
-            <a href="/cashbook/cashByDate.jsp?fullDate=<%=fullDate%>">
+            <a href="/cashbook/cash/cashByDate.jsp?fullDate=<%=fullDate%>">
                 <strong><%= day %></strong>
             </a><br>
 <%
