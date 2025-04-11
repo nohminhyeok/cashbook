@@ -43,9 +43,9 @@
 <title>카테고리 관리</title>
 <style>
     body {
-        background-color: #f5f5f5;
-        font-family: 'Arial', sans-serif;
-        color: #333;
+        background-color: #eef2f7;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #2c3e50;
         margin: 0;
         padding: 0;
     }
@@ -56,118 +56,104 @@
         right: 30px;
     }
 
-	h1 {
-	    color: #444;
-	    font-size: 2.5em;
-	    margin-top: 50px;
-	    font-weight: 600;
-	    text-align: center;
-	}
-
-    table {
-        width: 80%;
-        margin: 20px auto;
-        border-collapse: collapse;
-        background-color: #ffffff;
+    .top-right a {
+        font-size: 1em;
+        padding: 8px 16px;
+        border: 2px solid #4CAF50;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #4CAF50;
+        background-color: #fff;
+        transition: 0.3s;
     }
 
-    table, th, td {
-        border: 1px solid #ddd;
+    .top-right a:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin-top: 60px;
+        font-weight: bold;
+        text-align: center;
+        color: #34495e;
+    }
+
+    table {
+        width: 90%;
+        margin: 30px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     th, td {
-        padding: 15px;
+        padding: 14px 18px;
         text-align: center;
+        border-bottom: 1px solid #ddd;
     }
 
     th {
         background-color: #4CAF50;
         color: white;
+        font-size: 1em;
     }
 
     tr:nth-child(even) {
-        background-color: #f2f2f2;
+        background-color: #f8f8f8;
     }
 
     tr:hover {
-        background-color: #e0e0e0;
+        background-color: #e0f7df;
     }
 
     a {
         text-decoration: none;
-        font-size: 1.2em;
-        color: #4CAF50;
-        padding: 10px 20px;
-        border-radius: 5px;
-        background-color: #ffffff;
-        border: 2px solid #4CAF50;
-        transition: all 0.3s;
+        font-weight: 500;
     }
 
-    a:hover {
-        background-color: #4CAF50;
-        color: white;
-        border-color: #4CAF50;
-    }
-
-    .pagination {
+    .pagination, .form-container, .insert-link {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 25px;
     }
 
-    .pagination a {
+    .pagination a,
+    .insert-link a,
+    .form-container button {
         margin: 0 5px;
-        padding: 10px 20px;
+        padding: 10px 18px;
+        font-size: 1em;
         border-radius: 5px;
         border: 2px solid #4CAF50;
+        background-color: white;
         color: #4CAF50;
-        font-size: 1.1em;
+        transition: 0.3s;
         text-decoration: none;
     }
 
-    .pagination a:hover {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    .form-container {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .form-container input {
-        padding: 10px;
-        font-size: 1em;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        margin-right: 10px;
-    }
-
-    .form-container button {
-        padding: 10px 20px;
-        font-size: 1.1em;
-        border-radius: 5px;
-        border: 2px solid #4CAF50;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
+    .pagination a:hover,
+    .insert-link a:hover,
     .form-container button:hover {
-        background-color: #45a049;
-        border-color: #45a049;
+        background-color: #4CAF50;
+        color: white;
     }
 
-    .insert-link {
-        margin-top: 20px;
-        text-align: center;
+    .form-container input[type="text"] {
+        padding: 10px;
+        width: 250px;
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 8px;
     }
 </style>
 </head>
 <body>
 	<div class="top-right">
-		<a href="/cashbook/index.jsp">홈으로</a>
+		<a href="/cashbook/index.jsp">🏠 Index 페이지로 이동</a>
 	</div>
 
 	<h1>카테고리 관리</h1>

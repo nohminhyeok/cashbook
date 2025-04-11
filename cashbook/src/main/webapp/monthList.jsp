@@ -1,18 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="dto.*" %>
 <%@ page import="model.*" %>
-<%@ page import="java.util.Calendar" %>	
+<%@ page import="java.util.*" %>
 <%
-    String id = (String) session.getAttribute("adminId");
-    if(id == null) { 
-        response.sendRedirect("/cashbook/loginForm.jsp");
-        return;
-    }
-
     Calendar firstDate = Calendar.getInstance();
 
     String targetYear = request.getParameter("targetYear");
     String targetMonth = request.getParameter("targetMonth");
+/*
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    String todayDate = sdf.format(Calendar.getInstance().getTime());
+    System.out.println("todayDate : " +todayDate);
+*/    
 
     if(targetMonth == null || targetYear == null){
         targetYear = String.valueOf(firstDate.get(Calendar.YEAR));
@@ -52,8 +51,14 @@
         prevMonth--;
     }
 
+    
     String[] monthNames = { "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" };
     String currentMonthLabel = monthNames[Integer.parseInt(targetMonth)];
+    
+    Cash cash = new Cash();
+    CashDao cashDao = new CashDao();
+
+   	ArrayList<Cash> list = cashDao.selectCashListByMonth(targetYear, targetMonth);
 %>
 
 <!DOCTYPE html>
@@ -63,173 +68,154 @@
 <title>월별 가계부</title>
 <style>
     body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f5f5f5;
-        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #eef2f7;
         margin: 0;
-        padding: 0;
+        padding: 20px;
+        color: #333;
     }
 
     h1 {
         text-align: center;
-        color: #444;
         font-size: 2.5em;
-        margin-top: 50px;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 1.3em;
+        color: #555;
+        margin-bottom: 30px;
     }
 
     table {
         width: 100%;
-        margin: 0 auto;
         border-collapse: collapse;
         background-color: #fff;
-        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     th, td {
         width: 14.28%;
-        padding: 40px 0;
-        text-align: center;
+        height: 100px;
         border: 1px solid #ddd;
+        vertical-align: top;
+        padding: 8px;
+        background-color: #fdfdfd;
         position: relative;
     }
 
     th {
         background-color: #4CAF50;
         color: white;
+        font-weight: bold;
+        font-size: 1em;
+        text-align: center;
     }
 
-    td {
-        background-color: #fff;
+    td a {
+        font-weight: bold;
+        font-size: 0.95em;
+        text-decoration: none;
+        color: #2c3e50;
     }
 
-    td:hover {
-        background-color: #f0f0f0;
+    td a:hover {
+        color: #007bff;
     }
 
-    .sunday {
-        color: red;
+    td div {
+        font-size: 0.8em;
+        margin-top: 4px;
     }
 
-    .saturday {
-        color: blue;
+    p {
+        text-align: center;
+        margin-top: 30px;
     }
 
-    .empty {
-        background-color: #f0f0f0;
-    }
-
-    .day-number {
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        font-size: 20px;
+    a {
+        text-decoration: none;
+        color: #3498db;
         font-weight: bold;
     }
 
-    .table-container {
-        max-width: 90%;
-        margin: 0 auto;
-        position: relative;
-        padding-bottom: 120px;
-    }
-
-    .index-link {
-        position: absolute;
-        right: 0;
-        bottom: 10px;
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 1.2em;
-        transition: background-color 0.3s;
-        text-align: center;
-    }
-
-    .index-link:hover {
-        background-color: #45a049;
-    }
-
-    .month-btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 1.2em;
-        transition: background-color 0.3s;
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    .month-btn:hover {
-        background-color: #45a049;
+    a:hover {
+        color: #1d6fa5;
     }
 </style>
 </head>
 <body>
 <h1>월별 가계부</h1>
 
-<h2 style="text-align:center;">
-    <%= targetYear %>년 <%= currentMonthLabel %>
-</h2>
+<h2><%= targetYear %>년 <%= currentMonthLabel %></h2>
 
-<div class="table-container">
-    <table>
+<table border="1">
     <tr>
-        <th class="sunday">일</th>
+        <th>일</th>
         <th>월</th>
         <th>화</th>
         <th>수</th>
         <th>목</th>
         <th>금</th>
-        <th class="saturday">토</th>
+        <th>토</th>
     </tr>
-    <tr>
-        <%
-            for(int c = 1; c <= totalCell; c++) {
-                if(c - startBlank < 1 || c - startBlank > lastDate) {
-        %>
-                    <td class="empty">&nbsp;</td>
-        <%
-                } else {
-                    int currentDayOfWeek = (c - startBlank + dayOfWeek - 1) % 7;
-                    if(currentDayOfWeek == 1) {
-        %>
-                        <td class="sunday">
-                            <div class="day-number"><%= c - startBlank %></div>
-                        </td>
-        <%  
-                    } else if(currentDayOfWeek == 0) {
-        %>
-                        <td class="saturday">
-                            <div class="day-number"><%= c - startBlank %></div>
-                        </td>
-        <%  
-                    } else {
-        %>
-                        <td>
-                            <div class="day-number"><%= c - startBlank %></div>
-                        </td>
-        <%  
-                    }
-                }
+<tr>
+<%
+    for (int c = 1; c <= totalCell; c++) {
+        if (c - startBlank < 1 || c - startBlank > lastDate) {
+%>
+        <td>&nbsp;</td>
+<%
+        } else {
+            int day = c - startBlank;
+            String formattedMonth = String.format("%02d", Integer.parseInt(targetMonth) + 1); // 0~11 → 01~12
+            String formattedDay = String.format("%02d", day);
+            String fullDate = targetYear + "-" + formattedMonth + "-" + formattedDay;
 
-                if(c % 7 == 0) {
-        %>
-            </tr><tr>
-        <%
+            // 날짜에 해당하는 cash 내역 출력
+            ArrayList<Cash> dayCashList = new ArrayList<>();
+            for (Cash cs : list) {
+                if (cs.getCash_date().equals(fullDate)) {
+                    dayCashList.add(cs);
                 }
             }
-        %>
-    </tr>
-    </table>
+%>
+        <td valign="top">
+            <a href="/cashbook/cashByDate.jsp?fullDate=<%=fullDate%>">
+                <strong><%= day %></strong>
+            </a><br>
+<%
+            for (Cash cs : dayCashList) {
+%>
+            <div style="font-size: 10px; color: <%= cs.getColor() %>;">
+                <%= cs.getMemo() %> (<%= cs.getAmount() %>)
+            </div>
+<%
+            }
+%>
+        </td>
+<%
+        }
+        if (c % 7 == 0) {
+%>
+</tr><tr>
+<%
+        }
+    }
+%>
+</tr>
+</table>
 
-    <a href="?targetYear=<%= prevYear %>&targetMonth=<%= prevMonth %>" class="month-btn">이전 달</a>
-    <a href="?targetYear=<%= nextYear %>&targetMonth=<%= nextMonth %>" class="month-btn">다음 달</a>
-    <a href="/cashbook/index.jsp" class="index-link">Index 페이지로 이동</a>
-</div>
+<p>
+    <a href="?targetYear=<%= prevYear %>&targetMonth=<%= prevMonth %>">이전 달</a> |
+    <a href="?targetYear=<%= nextYear %>&targetMonth=<%= nextMonth %>">다음 달</a>
+</p>
+
+<p><a href="/cashbook/index.jsp">Index 페이지로 이동</a></p>
+
 </body>
 </html>

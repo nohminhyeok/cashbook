@@ -5,99 +5,92 @@
 <meta charset="UTF-8">
 <title>비밀번호 수정</title>
 <style>
-    /* 배경색, 폰트, 텍스트 정렬 */
     body {
-        background-color: #f5f5f5; /* 부드러운 회색 배경 */
-        font-family: 'Arial', sans-serif;
-        color: #333;
-        text-align: center;
+        background-color: #eef2f7;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #2c3e50;
         margin: 0;
         padding: 0;
+        text-align: center;
     }
 
     h1 {
-        color: #444; /* 어두운 회색 */
-        font-size: 2.5em;
-        margin-top: 50px;
-        font-weight: 600;
+        font-size: 2.8em;
+        margin-top: 60px;
+        font-weight: bold;
+        color: #34495e;
+    }
+
+    form {
+        margin-top: 40px;
     }
 
     table {
-        margin: 30px auto;
-        border-collapse: collapse;
-        width: 50%;
+        margin: 0 auto;
+        border-collapse: separate;
+        border-spacing: 15px;
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    th, td {
-        padding: 15px;
-        text-align: center;
-        font-size: 1.1em;
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        width: 400px;
     }
 
     th {
-        background-color: #eeeeee; /* 연한 회색 */
-        color: #333;
+        text-align: left;
+        font-size: 1.1em;
+        color: #34495e;
+        padding-bottom: 5px;
     }
 
     td {
-        background-color: #ffffff;
-        border: 1px solid #ddd;
+        text-align: left;
     }
 
     input[type="text"], input[type="password"] {
+        width: 100%;
         padding: 12px;
-        width: 85%;
-        border: 1px solid #ccc; /* 회색 테두리 */
-        border-radius: 5px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
         font-size: 1em;
-        color: #333;
+        background-color: #fafafa;
     }
 
     button {
-        background-color: #4CAF50; /* 그린 색상 */
+        margin-top: 30px;
+        background-color: #4CAF50;
         color: white;
         border: none;
-        padding: 12px 25px;
-        border-radius: 5px;
+        padding: 14px 35px;
+        border-radius: 6px;
         font-size: 1.2em;
         cursor: pointer;
-        margin-top: 20px;
         transition: background-color 0.3s;
     }
 
     button:hover {
-        background-color: #45a049; /* 버튼 호버 시 조금 더 어두운 그린 */
+        background-color: #45a049;
     }
-
 </style>
 </head>
 <body>
-	<h1>비밀번호 수정</h1>
-	<form action="/cashbook/updateAdminPwAction.jsp" method="post">
-	<table>
-		<tr>
-			<th>사용자 아이디</th>
-			<td>
-				<input type="text" name="id" required>
-			</td>
-		</tr>
-		<tr>
-			<th>기존 비밀번호</th>
-			<td>
-				<input type="password" name="prePw" required>
-			</td>
-		</tr>
-		<tr>
-			<th>변경할 비밀번호</th>
-			<td>
-				<input type="password" name="newPw" required>
-			</td>
-		</tr>
-	</table>
-	<button type="submit">변경하기</button>
-	</form>
+    <h1>🔐 비밀번호 수정</h1>
+    <form action="/cashbook/updateAdminPwAction.jsp" method="post">
+        <table>
+            <tr>
+                <th>사용자 아이디</th>
+                <td><input type="text" name="id" required></td>
+            </tr>
+            <tr>
+                <th>기존 비밀번호</th>
+                <td><input type="password" name="prePw" required></td>
+            </tr>
+            <tr>
+                <th>변경할 비밀번호</th>
+                <td><input type="password" name="newPw" required></td>
+            </tr>
+        </table>
+        <button type="submit">비밀번호 변경</button>
+    </form>
 </body>
 </html>

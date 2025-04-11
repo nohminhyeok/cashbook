@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dto.Cash;
+import dto.Category;
 import dto.Paging;
 
 public class CashDao {
@@ -112,5 +113,27 @@ public class CashDao {
 	    
 	    conn.close();
 		return list;
+	}
+	
+	public void insertCash(Cash c) throws SQLException, ClassNotFoundException{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook","root","java1234");
+		String sql = "insert into cash(category_no, cash_date, amount, memo, color) values(?, ?, ?, ?, ?)";
+		stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, c.getCategory_no());
+		stmt.setString(2, c.getCash_date());
+		stmt.setInt(3, c.getAmount());
+		stmt.setString(4, c.getMemo());
+		stmt.setString(5, c.getColor());
+		
+		int row = stmt.executeUpdate();
+		if(row == 1) {
+			System.out.println("CategoryDao.insertcategory - 입력성공");
+		} else {
+			System.out.println("CategoryDao.insertcategory - 입력실패");
+		}
+		conn.close();
 	}
 }
