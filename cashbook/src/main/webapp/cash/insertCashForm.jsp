@@ -117,10 +117,9 @@
 
     <hr>
 
-    <h1>CASH 이력 추가</h1>
+    <h1>수입/지출 추가</h1>
     <form method="get" action="/cashbook/cash/insertCashAction.jsp">
         <input type="hidden" name="fullDate" value="<%=fullDate%>">
-        <input type="hidden" name="category_no" value="<%=category_no%>">
 
         <div class="date-label">날짜 : <%=fullDate %></div>
 
@@ -129,7 +128,10 @@
             <% if(list != null) {
                 for(Category c : list) { %>
                     <option value="<%=c.getCategory_no()%>"><%=c.getTitle()%></option>
-            <% }} %>
+			<%
+					}
+                } 
+			%>
         </select>
 
         <label for="memo">메모</label>

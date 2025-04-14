@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dto.Cash;
-import dto.Category;
 import dto.Paging;
 
 public class CashDao {
@@ -206,5 +205,34 @@ public class CashDao {
 	    conn.close();
 	    
 	    return rowsAffected; // 삭제된 행 수 반환
+	}
+	
+	
+	public Cash selectCashOne(int cash_no) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+
+		String sql = "SELECT * FROM cash WHERE cash_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, cash_no);
+		ResultSet rs = stmt.executeQuery();
+
+		Cash cash = null;
+		if (rs.next()) {
+			cash = new Cash();
+			cash.setCash_no(rs.getInt("cash_no"));
+			cash.setCategory_no(rs.getInt("category_no"));
+			cash.setCash_date(rs.getString("cash_date"));
+			cash.setAmount(rs.getInt("amount"));
+			cash.setMemo(rs.getString("memo"));
+			cash.setColor(rs.getString("color"));
+			cash.setCreatedate(rs.getString("createdate"));
+			cash.setUpdatedate(rs.getString("updatedate"));
+		}
+
+		rs.close();
+		stmt.close();
+		conn.close();
+		return cash;
 	}
 }
