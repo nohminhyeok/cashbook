@@ -202,4 +202,56 @@ public class CategoryDao {
 	    return list;
 	}
 	
+	public ArrayList<Category> selectTotalMonthByYear(String year) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+
+		String sql = "SELECT MONTH(cash_date) AS m, ct.kind, COUNT(*) AS cnt, SUM(amount) AS amt " +
+		             "FROM category ct INNER JOIN cash cs ON ct.category_no = cs.category_no " +
+		             "WHERE YEAR(cash_date) = ? " +
+		             "GROUP BY MONTH(cash_date), ct.kind " +
+		             "ORDER BY m, ct.kind";
+
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, year);
+		ResultSet rs = stmt.executeQuery();
+
+		ArrayList<Category> list = new ArrayList<>();
+		while (rs.next()) {
+		    Category c = new Category();
+		    c.setMonth(rs.getInt("m"));
+		    c.setKind(rs.getString("kind"));
+		    c.setCount(rs.getInt("cnt"));
+		    c.setAmount(rs.getInt("amt"));
+		    list.add(c);
+		}
+		conn.close();
+		return list;
+	}
+	
+	public ArrayList<Category> selectTotalMonth(String year, String month) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+		
+		String sql = "SELECT ct.kind, COUNT(*) AS cnt, SUM(cs.amount) AS amt "
+		           + "FROM category ct INNER JOIN cash cs ON ct.category_no = cs.category_no "
+		           + "WHERE YEAR(cs.cash_date) = ? AND MONTH(cs.cash_date) = ? "
+		           + "GROUP BY ct.kind";
+
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, year);
+		stmt.setString(2, month);
+		ResultSet rs = stmt.executeQuery();
+
+		ArrayList<Category> list = new ArrayList<>();
+		while (rs.next()) {
+		    Category c = new Category();
+		    c.setKind(rs.getString("kind"));
+		    c.setCount(rs.getInt("cnt"));
+		    c.setAmount(rs.getInt("amt"));
+		    list.add(c);
+		}
+		conn.close();
+		return list;
+	}
 }

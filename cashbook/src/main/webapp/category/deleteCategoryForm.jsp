@@ -15,10 +15,10 @@
         var result = confirm("정말로 삭제하시겠습니까?");
         if (result) {
             // 삭제 확인시, 해당 페이지로 POST 요청을 보내 삭제 진행
-            window.location.href = "/cashbook/deleteCategoryAction.jsp?no=<%= no %>";
+            window.location.href = "/cashbook/category/deleteCategoryAction.jsp?no=<%= no %>";
         } else {
             // 취소시, 목록 페이지로 리다이렉트
-            window.location.href = "/cashbook/categoryList.jsp";
+            window.location.href = "/cashbook/category/categoryList.jsp";
         }
     }
 </script>

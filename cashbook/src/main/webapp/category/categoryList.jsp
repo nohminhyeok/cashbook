@@ -176,19 +176,19 @@
 				</td>
 				<td><%=c.getTitle()%></td>
 				<td><%=c.getCreatedate()%></td>
-				<td><a href="/cashbook/updateCategoryForm.jsp?no=<%=c.getCategory_no()%>">수정</a></td>
-				<td><a href="/cashbook/deleteCategoryForm.jsp?no=<%=c.getCategory_no()%>">삭제</a></td>
+				<td><a href="/cashbook/category/updateCategoryForm.jsp?no=<%=c.getCategory_no()%>">수정</a></td>
+				<td><a href="/cashbook/category/deleteCategoryForm.jsp?no=<%=c.getCategory_no()%>">삭제</a></td>
 			</tr>
 		<%
 			}
 		%>				
 	</table>
 	<div class="insert-link">
-		<a href="/cashbook/insertCategoryForm.jsp">작성하기</a>
+		<a href="/cashbook/category/insertCategoryForm.jsp">작성하기</a>
 	</div>
 
 	<div class="form-container">
-		<form action="/cashbook/categoryList.jsp" method="get">
+		<form action="/cashbook/category/categoryList.jsp" method="get">
 			<input type="text" name="searchWord" value="<%=searchWord%>" placeholder="검색어 입력"> 
 			<button type="submit">검색</button>
 		</form>
@@ -198,16 +198,16 @@
 		<%
 			if(currentPage > 1) {
 		%>
-			<a href="/cashbook/categoryList.jsp?currentPage=1&searchWord=<%=searchWord%>">처음</a>
+			<a href="/cashbook/category/categoryList.jsp?currentPage=1&searchWord=<%=searchWord%>">처음</a>
 		<%
 			} 
 		%>
-		<a href="/cashbook/categoryList.jsp?currentPage=<%=currentPage-1%>&searchWord=<%=searchWord%>">이전</a>
-		<a href="/cashbook/categoryList.jsp?currentPage=<%=currentPage+1%>&searchWord=<%=searchWord%>">다음</a>
+		<a href="/cashbook/category/categoryList.jsp?currentPage=<%=currentPage-1%>&searchWord=<%=searchWord%>">이전</a>
+		<a href="/cashbook/category/categoryList.jsp?currentPage=<%=currentPage+1%>&searchWord=<%=searchWord%>">다음</a>
 		<%
 			if(currentPage < lastPage) {
 		%>
-			<a href="/cashbook/categoryList.jsp?currentPage=<%=lastPage%>&searchWord=<%=searchWord%>">마지막</a>
+			<a href="/cashbook/category/categoryList.jsp?currentPage=<%=lastPage%>&searchWord=<%=searchWord%>">마지막</a>
 		<%
 			}
 		%>

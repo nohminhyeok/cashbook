@@ -5,7 +5,25 @@ public class Category {
 	public String kind;
 	public String title;
 	public String createdate;
-	
+	private int count;
+	private int amount;
+	private int month;
+
+	public int getMonth() { return month; }
+	public void setMonth(int month) { this.month = month; }
+	// Getter/Setter 추가
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
 	public int getCategory_no() {
 		return category_no;
 	}

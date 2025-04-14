@@ -23,6 +23,6 @@
         category.setTitle(title);
 
         categoryDao.insertCategory(category);
-        response.sendRedirect("/cashbook/categoryList.jsp");
+        response.sendRedirect("/cashbook/category/categoryList.jsp");
     }
 %>

@@ -136,7 +136,7 @@
 </head>
 <body>
 
-    <form action="/cashbook/updateCategoryAction.jsp?no=<%=no%>" method="post">
+    <form action="/cashbook/category/updateCategoryAction.jsp?no=<%=no%>" method="post">
         <h1>수정 페이지</h1>
         <table>
             <tr>

@@ -117,7 +117,7 @@
 </head>
 <body>
 	<h1>카테고리 작성</h1>
-	<form action="/cashbook/insertCategoryAction.jsp" method="post">
+	<form action="/cashbook/category/insertCategoryAction.jsp" method="post">
 		<table>
 			<tr>
 				<td>분류</td>
@@ -141,7 +141,7 @@
 	</form>
 
 	<div class="back-link">
-		<a href="/cashbook/categoryList.jsp">뒤로 가기</a>
+		<a href="/cashbook/category/categoryList.jsp">뒤로 가기</a>
 	</div>
 </body>
 </html>

@@ -80,10 +80,13 @@ if(id == null) {
             <a class="menu-link" href="/cashbook/updateAdminPwForm.jsp">비밀번호 수정</a>
         </li>
         <li>
-            <a class="menu-link" href="/cashbook/categoryList.jsp">카테고리 관리</a>
+            <a class="menu-link" href="/cashbook/category/categoryList.jsp">카테고리 관리</a>
         </li>
         <li>
             <a class="menu-link" href="/cashbook/monthList.jsp">가계부 보기</a>
+        </li>
+        <li>
+        	<a class="menu-link" href="/cashbook/category/totalAmountForm.jsp">수입/지출 통계</a>
         </li>
     </ul>
 

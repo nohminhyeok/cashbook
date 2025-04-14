@@ -12,5 +12,5 @@
 	
 	category = categoryDao.updateCategory(category_no, kind, title);
 	
-	response.sendRedirect("/cashbook/categoryList.jsp");
+	response.sendRedirect("/cashbook/category/categoryList.jsp");
 %>
