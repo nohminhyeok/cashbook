@@ -21,6 +21,8 @@
 	for (Category cat : categoryList) {
 	    categoryMap.put(cat.getCategory_no(), cat.getKind() + " - " + cat.getTitle());
 	}
+	
+	ReceiptDao receiptDao = new ReceiptDao();
 %>
 <!DOCTYPE html>
 <html>
@@ -107,6 +109,7 @@
             <th>날짜</th>
             <th>금액</th>
             <th>메모</th>
+            <th>영수증 유/무</th>
         </tr>
         <%
             for(Cash c : list){
@@ -121,6 +124,12 @@
             <td><%=c.getCash_date()%></td>
             <td><%=c.getAmount()%></td>
             <td><%=c.getMemo()%></td>
+            <td>
+            	<%
+            	boolean hasReceipt = receiptDao.hasReceipt(c.getCash_no());
+                out.print(hasReceipt ? "✅" : "❌");
+            	%>
+            </td>
         </tr>
         <%
         	} 

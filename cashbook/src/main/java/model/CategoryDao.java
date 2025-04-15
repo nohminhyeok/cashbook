@@ -229,21 +229,18 @@ public class CategoryDao {
 		return list;
 	}
 	
-	public ArrayList<Category> selectTotalMonth(String year, String month) throws ClassNotFoundException, SQLException {
+	public ArrayList<Category> selectTotalAll() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
+		ArrayList<Category> list = new ArrayList<>();
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
-		
-		String sql = "SELECT ct.kind, COUNT(*) AS cnt, SUM(cs.amount) AS amt "
-		           + "FROM category ct INNER JOIN cash cs ON ct.category_no = cs.category_no "
-		           + "WHERE YEAR(cs.cash_date) = ? AND MONTH(cs.cash_date) = ? "
-		           + "GROUP BY ct.kind";
+
+		String sql = "SELECT ct.kind, COUNT(*) AS cnt, SUM(cs.amount) AS amt " +
+		             "FROM category ct INNER JOIN cash cs ON ct.category_no = cs.category_no " +
+		             "GROUP BY ct.kind";
 
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, year);
-		stmt.setString(2, month);
 		ResultSet rs = stmt.executeQuery();
 
-		ArrayList<Category> list = new ArrayList<>();
 		while (rs.next()) {
 		    Category c = new Category();
 		    c.setKind(rs.getString("kind"));
@@ -251,7 +248,11 @@ public class CategoryDao {
 		    c.setAmount(rs.getInt("amt"));
 		    list.add(c);
 		}
+
+		rs.close();
+		stmt.close();
 		conn.close();
+
 		return list;
 	}
 }

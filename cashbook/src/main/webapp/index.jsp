@@ -86,7 +86,7 @@ if(id == null) {
             <a class="menu-link" href="/cashbook/monthList.jsp">가계부 보기</a>
         </li>
         <li>
-        	<a class="menu-link" href="/cashbook/category/totalAmountForm.jsp">수입/지출 통계</a>
+        	<a class="menu-link" href="/cashbook/category/amountView.jsp">수입/지출 통계</a>
         </li>
     </ul>
 

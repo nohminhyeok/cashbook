@@ -219,7 +219,7 @@
     <a href="?targetYear=<%= nextYear %>&targetMonth=<%= nextMonth %>">다음 달</a>
 </p>
 
-<p><a href="/cashbook/index.jsp">Index 페이지로 이동</a></p>
+<p><a href="/cashbook/index.jsp">🏠 Index 페이지로 이동</a></p>
 
 </body>
 </html>

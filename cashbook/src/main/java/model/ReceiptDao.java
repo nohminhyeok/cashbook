@@ -67,4 +67,18 @@ public class ReceiptDao {
 		
 		conn.close();
 	}
+	
+	public boolean hasReceipt(int cash_no) throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cashbook", "root", "java1234");
+
+		String sql = "SELECT cash_no FROM receipt WHERE cash_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, cash_no);
+		ResultSet rs = stmt.executeQuery();
+
+		boolean exists = rs.next();
+		conn.close();
+		return exists;
+	}
 }
