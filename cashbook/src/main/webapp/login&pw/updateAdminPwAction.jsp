@@ -65,7 +65,7 @@
         <h2 class="message-fail">비밀번호 변경 실패! 사용자 정보를 확인해주세요.</h2>
         <p class="redirect-info">2초 후, 로그인 페이지로 이동합니다...</p>
         <script type="text/javascript">
-            redirectToPage("/cashbook/loginForm.jsp"); // 실패 시 loginForm.jsp로 리다이렉트
+            redirectToPage("/cashbook/login&pw/loginForm.jsp"); // 실패 시 loginForm.jsp로 리다이렉트
         </script>
 <%
     }

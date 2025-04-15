@@ -76,7 +76,7 @@
 </head>
 <body>
 	<h1>로그인</h1>
-	<form action="/cashbook/loginAction.jsp" method="post">
+	<form action="/cashbook/login&pw/loginAction.jsp" method="post">
 	<table border="1">
 		<tr>
 			<th>ID</th>

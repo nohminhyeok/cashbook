@@ -77,7 +77,7 @@ if(id == null) {
     <h1>📊 Index</h1>
     <ul>
         <li>
-            <a class="menu-link" href="/cashbook/updateAdminPwForm.jsp">비밀번호 수정</a>
+            <a class="menu-link" href="/cashbook/login&pw/updateAdminPwForm.jsp">비밀번호 수정</a>
         </li>
         <li>
             <a class="menu-link" href="/cashbook/category/categoryList.jsp">카테고리 관리</a>
@@ -90,7 +90,7 @@ if(id == null) {
         </li>
     </ul>
 
-    <form action="/cashbook/logout.jsp" method="post">
+    <form action="/cashbook/login&pw/logout.jsp" method="post">
         <button class="logout-btn" type="submit">🔓 로그아웃</button>
     </form>
 </body>

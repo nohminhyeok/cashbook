@@ -18,7 +18,7 @@
         response.sendRedirect("/cashbook/index.jsp");
     } else { 
         // 로그인 실패
-        response.sendRedirect("/cashbook/loginForm.jsp");
+        response.sendRedirect("/cashbook/login&pw/loginForm.jsp");
     }
 %>
 	

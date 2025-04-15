@@ -75,7 +75,7 @@
 </head>
 <body>
     <h1>🔐 비밀번호 수정</h1>
-    <form action="/cashbook/updateAdminPwAction.jsp" method="post">
+    <form action="/cashbook/login&pw/updateAdminPwAction.jsp" method="post">
         <table>
             <tr>
                 <th>사용자 아이디</th>
