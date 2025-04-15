@@ -8,28 +8,34 @@
 	if(id == null) { // 로그인 상태가 아니면
 	    response.sendRedirect("/cashbook/loginForm.jsp");
 	    return;
+	    // 로그인 상태가 아니면 로그인페이지로
 	}
 
 	String searchWord = request.getParameter("searchWord");
 	if(searchWord == null) {
 		searchWord = "";
+		// 검색단어가 없다면 공백처리
 	}
 	System.out.println("searchWord : "+searchWord);
 
-	int currentPage = 1;
+	int currentPage = 1; // 현재 페이지 기본값 설정 1
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		// 사용자가 요청한 페이지 출력
 	}
+	// request -> http 요청 객체
 
 	Category category = new Category();
 	CategoryDao categoryDao = new CategoryDao();
 
 	Paging p = new Paging();
 	p.setCurrentPage(currentPage);
-	p.setRowPerPage(10);
+	p.setRowPerPage(5);
 	int rowPerPage = p.getRowPerPage();
 	int totalCnt = categoryDao.totalCountCategory(searchWord);
+	// 전체 카테고리의 수(검색 단어에 따라)
 	int lastPage = totalCnt / rowPerPage;
+	// 마지막 페이지는 총 카테고리 수 / 출력할 행
 	if(totalCnt % rowPerPage != 0) {
 		lastPage = lastPage + 1;
 	}
@@ -195,22 +201,23 @@
 	</div>
 
 	<div class="pagination">
-		<%
-			if(currentPage > 1) {
-		%>
-			<a href="/cashbook/category/categoryList.jsp?currentPage=1&searchWord=<%=searchWord%>">처음</a>
-		<%
-			} 
-		%>
-		<a href="/cashbook/category/categoryList.jsp?currentPage=<%=currentPage-1%>&searchWord=<%=searchWord%>">이전</a>
-		<a href="/cashbook/category/categoryList.jsp?currentPage=<%=currentPage+1%>&searchWord=<%=searchWord%>">다음</a>
-		<%
-			if(currentPage < lastPage) {
-		%>
-			<a href="/cashbook/category/categoryList.jsp?currentPage=<%=lastPage%>&searchWord=<%=searchWord%>">마지막</a>
-		<%
-			}
-		%>
+    <%
+        // 처음 & 이전 페이지 링크는 currentPage > 1 일 때만 출력
+        if(currentPage > 1) {
+    %>
+        <a href="/cashbook/category/categoryList.jsp?currentPage=1&searchWord=<%=searchWord%>">처음</a>
+        <a href="/cashbook/category/categoryList.jsp?currentPage=<%=currentPage - 1%>&searchWord=<%=searchWord%>">이전</a>
+    <%
+        }
+
+        // 다음 & 마지막 페이지 링크는 currentPage < lastPage 일 때만 출력
+        if(currentPage < lastPage) {
+    %>
+        <a href="/cashbook/category/categoryList.jsp?currentPage=<%=currentPage + 1%>&searchWord=<%=searchWord%>">다음</a>
+        <a href="/cashbook/category/categoryList.jsp?currentPage=<%=lastPage%>&searchWord=<%=searchWord%>">마지막</a>
+    <%
+        }
+    %>
 	</div>
 </body>
 </html>

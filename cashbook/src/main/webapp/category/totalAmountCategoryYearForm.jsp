@@ -3,34 +3,45 @@
 <%@ page import="dto.*" %>
 <%@ page import="model.*" %>
 <%
-	String year = request.getParameter("year");
+	String id = (String) session.getAttribute("adminId");
+	if(id == null) {
+	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    return;
+		// 세션에 admin 아이디가 없으면 로그인 페이지로
+	}
+	String year = request.getParameter("year"); // 년도 값을 viewLayer에서 받아옴
 	if (year == null) {
-	    Calendar cal = Calendar.getInstance();
+	    Calendar cal = Calendar.getInstance();  // 현재의 날짜를 가져오고
 	    year = String.valueOf(cal.get(Calendar.YEAR));
+	    // year는 문자열 형태로 받아와야 하니까 value of를 사용해서 현재의 날짜에서 년도만 받아옴
+	    // year 값이 null이면 현재 년도로 설정
 	}
 
 	CategoryDao categoryDao = new CategoryDao();
 	ArrayList<Category> List = categoryDao.selectTotalMonthByYear(year);
 
-	int selectedYear = Integer.parseInt(year);
-	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	int selectedYear = Integer.parseInt(year); //선택한 년도
+	int currentYear = Calendar.getInstance().get(Calendar.YEAR); 
 	int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
 	int maxMonth = (selectedYear == currentYear) ? currentMonth : 12;
+	// 선택한 년도가 현재 연도랑 같으면 현재 월까지만 표시하고 아니면 12월까지 표시 삼항연산자 사용
+	// ex = a-b > c : d
+	// a-b의 값이 참이면 c 아니면 d
 	
 	Map<Integer, Category[]> monthMap = new LinkedHashMap<>();
 
 	for (Category c : List) {
-	    int m = c.getMonth();
-	    String kind = c.getKind();
+	    int m = c.getMonth();  // 몇월에 해당하는 데이터인지 가져옴
+	    String kind = c.getKind(); // 수입인지 지출인지
 
-	    if (!monthMap.containsKey(m)) {
+	    if (!monthMap.containsKey(m)) { 
 	        monthMap.put(m, new Category[2]); // [0] = 수입, [1] = 지출
-	    }
+	    } // 
 
 	    if ("수입".equals(kind)) {
-	        monthMap.get(m)[0] = c;
+	        monthMap.get(m)[0] = c; // kind가 수입이면 0번 인덱스에 저장
 	    } else if ("지출".equals(kind)) {
-	        monthMap.get(m)[1] = c;
+	        monthMap.get(m)[1] = c; // kind가 지출이면 1번 인덱스에 저장
 	    }
 	}
 %>
@@ -110,9 +121,13 @@
 	<form method="get" action="">
 		<label for="year">연도 선택:</label>
 		<select name="year" id="year">
-			<% for (int y = currentYear; y >= 2000; y--) { %>
+			<% 
+				for (int y = currentYear; y >= 2000; y--) {
+			%>
 				<option value="<%= y %>" <%= (String.valueOf(y).equals(year)) ? "selected" : "" %>><%= y %></option>
-			<% } %>
+			<% 
+				}
+			%>
 		</select>
 		<button type="submit">조회</button>
 	</form>
@@ -128,11 +143,12 @@
 			int totalIncomeAmount = 0;
 			int totalExpenseCount = 0;
 			int totalExpenseAmount = 0;
+			// 값을 담을 변수 설정
 
 			for (int m = 1; m <= maxMonth; m++) {
 			    Category[] pair = monthMap.get(m);
-			    Category income = pair != null ? pair[0] : null;
-			    Category expense = pair != null ? pair[1] : null;
+			    Category income = pair != null ? pair[0] : null; // pair 0 - 수입
+			    Category expense = pair != null ? pair[1] : null; // pair 1 - 지출
 
 			    if (income != null) {
 			        totalIncomeCount += income.getCount();
@@ -148,6 +164,7 @@
 			<td><%= m %>월</td>
 			<td><%= (income != null) ? income.getCount() + "건 / " + income.getAmount() + "원" : "-" %></td>
 			<td><%= (expense != null) ? expense.getCount() + "건 / " + expense.getAmount() + "원" : "-" %></td>
+			<!-- 해당 월에 수입이나 지출에 대한 값이 있으면 건,액 표시 없으면 - 표시 -->
 		</tr>
 		<% } %>
 		<tr style="background-color: #dff0d8; font-weight: bold;">

@@ -3,6 +3,11 @@
 <%@ page import="model.*" %>
 <%@ page import="java.util.*" %>
 <%  
+	String id = (String) session.getAttribute("adminId");
+	if(id == null) {
+	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    return;
+	}
     int no = Integer.parseInt(request.getParameter("no"));
     System.out.println("no : "+no);
 %>

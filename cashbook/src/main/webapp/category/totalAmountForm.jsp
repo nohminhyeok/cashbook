@@ -3,6 +3,12 @@
 <%@ page import="dto.*" %>
 <%@ page import="model.*" %>
 <%
+	String id = (String) session.getAttribute("adminId");
+	if(id == null) {
+	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    return;
+		// 세션에 admin 아이디가 없으면 로그인 페이지로
+	}
 	CategoryDao categoryDao = new CategoryDao();
 	ArrayList<Category> list = categoryDao.selectTotalAll(); // kind별 총 건수/금액 가져오기
 %>
@@ -96,15 +102,15 @@
 				}
 			}
 
-			int balance = totalIncome - totalExpense;
+			int total = totalIncome - totalExpense;
 		%>
 		<tr>
 			<th>잔 액</th>
-			<td><%= balance %>원</td>
+			<td><%= total %>원</td>
 			<th>재정상태</th>
 			<td>
 				<%
-					if (balance < 0) {
+					if (total < 0) {
 				%>
 					적자(라면만 먹고 살아야 합니다.)
 				<%

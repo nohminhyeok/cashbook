@@ -2,6 +2,11 @@
 <%@ page import="dto.*" %>
 <%@ page import="model.*" %>
 <%
+	String id = (String) session.getAttribute("adminId");
+	if(id == null) {
+	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    return;
+	}
 	int cash_no = Integer.parseInt(request.getParameter("cash_no"));
 	CashDao cashDao = new CashDao();
 	Cash cash = cashDao.selectCashOne(cash_no);

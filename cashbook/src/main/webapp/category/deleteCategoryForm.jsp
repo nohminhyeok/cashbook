@@ -2,6 +2,11 @@
 <%@ page import="dto.*"%>
 <%@ page import="model.*"%>
 <%
+	String id = (String) session.getAttribute("adminId");
+	if(id == null) {
+	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    return;
+	}
     int no = Integer.parseInt(request.getParameter("no"));
 %>
 <!DOCTYPE html>

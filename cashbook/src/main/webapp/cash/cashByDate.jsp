@@ -3,6 +3,11 @@
 <%@ page import="model.*" %>
 <%@ page import="java.util.*" %>
 <%
+	String id = (String) session.getAttribute("adminId");
+	if(id == null) {
+	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    return;
+	}
 	String fullDate = request.getParameter("fullDate");
 	if (fullDate == null || fullDate.isEmpty()) {
 	    response.sendRedirect("/cashbook/monthCash.jsp");

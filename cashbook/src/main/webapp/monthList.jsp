@@ -3,57 +3,63 @@
 <%@ page import="model.*" %>
 <%@ page import="java.util.*" %>
 <%
+	String id = (String) session.getAttribute("adminId");
+	if(id == null) {
+	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    return;
+		// 세션에 admin 아이디가 없으면 로그인 페이지로
+	}
+	
     Calendar firstDate = Calendar.getInstance();
-
+    // 현재 날짜에 대한 정보
+	
     String targetYear = request.getParameter("targetYear");
     String targetMonth = request.getParameter("targetMonth");
-/*
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-    String todayDate = sdf.format(Calendar.getInstance().getTime());
-    System.out.println("todayDate : " +todayDate);
-*/    
-
     if(targetMonth == null || targetYear == null){
         targetYear = String.valueOf(firstDate.get(Calendar.YEAR));
         targetMonth = String.valueOf(firstDate.get(Calendar.MONTH));
     }
+    // 년 월을 지정하지 않았으면 현재 년, 월을 받아온다.
 
     firstDate.set(Calendar.YEAR, Integer.parseInt(targetYear));
     firstDate.set(Calendar.MONTH, Integer.parseInt(targetMonth));
     firstDate.set(Calendar.DATE, 1);
+    // firstDate를 Calendar에서 현재 기준 년, 월을 받고 1일을 기준으로 맞춘다.
 
-    int lastDate = firstDate.getActualMaximum(Calendar.DATE);
-    int dayOfWeek = firstDate.get(Calendar.DAY_OF_WEEK);
-    int startBlank = dayOfWeek - 1;
+    int lastDate = firstDate.getActualMaximum(Calendar.DATE); // lastDate는 현재 월 기준 마지막 날짜 (ex 3.31)
+    int dayOfWeek = firstDate.get(Calendar.DAY_OF_WEEK);	 // 1일이 무슨 요일인지 확인 일요일(1) ~ 토요일 (7)
+    int startBlank = dayOfWeek - 1; 						// 해당 달이 무슨 요일에 시작하는지에 따른 빈칸 계산 토요일 시작이면 빈칸은 6개
     int endBlank = 0;
-    int totalCell = startBlank + lastDate + endBlank;
-
+    
+    int totalCell = startBlank + lastDate + endBlank;		// 달력에 필요한 총 셀 개수 구하기
     if(totalCell % 7 != 0){
-        endBlank = 7 - (totalCell % 7);
+        endBlank = 7 - (totalCell % 7); // 마지막 주의 빈칸을 계산
         totalCell = startBlank + lastDate + endBlank;
     }
+    // 달력의 총 칸수 = 첫주의 빈칸 + 월의 마지막 날짜 + 마지막 주의 빈칸
 
     int nextMonth = Integer.parseInt(targetMonth);
     int nextYear = Integer.parseInt(targetYear);
-    if(nextMonth == 11) {
+    if(nextMonth == 11) { // month의 값이 11(12월)이면 다음달은 0(1월), 년도 1년 증가
         nextMonth = 0;
         nextYear++;
-    } else {
+    } else {			// 값이 11이 아니면 월만 + 1
         nextMonth++;
     }
 
     int prevMonth = Integer.parseInt(targetMonth);
     int prevYear = Integer.parseInt(targetYear);
-    if(prevMonth == 0) {
+    if(prevMonth == 0) { // month의 값이 0(1월)이면 이전 달은 11(12월), 년도 1년 감소
         prevMonth = 11;
         prevYear--;
-    } else {
-        prevMonth--;
+    } else {			// 값이 0이 아니면 월만 -1
+        prevMonth--; 
     }
 
     
     String[] monthNames = { "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" };
     String currentMonthLabel = monthNames[Integer.parseInt(targetMonth)];
+    // 월을 배열로 받아서 선택한 월을 출력
     
     Cash cash = new Cash();
     CashDao cashDao = new CashDao();
@@ -169,16 +175,20 @@
     </tr>
 <tr>
 <%
-    for (int c = 1; c <= totalCell; c++) {
-        if (c - startBlank < 1 || c - startBlank > lastDate) {
+    for (int c = 1; c <= totalCell; c++) { // 달력의 실제 칸 개수를 구하고
+        if (c - startBlank < 1 || c - startBlank > lastDate) { // 첫주와 마지막 주의 공백을 계산하는 방법(공백 셀 계산)
+        	// 셀 - 첫주의 공백이 1보다 작다 || 셀 - 첫주의 공백이 마지막 날보다 크다 >> 빈 칸으로 입력
 %>
         <td>&nbsp;</td>
 <%
-        } else {
-            int day = c - startBlank;
-            String formattedMonth = String.format("%02d", Integer.parseInt(targetMonth) + 1); // 0~11 → 01~12
-            String formattedDay = String.format("%02d", day);
+        } else { // 실제 날자 셀 계산
+            int day = c - startBlank; // 시작일자
+    		// c-startBlank 로 첫 날짜 구하기
+            String formattedMonth = String.format("%02d", Integer.parseInt(targetMonth) + 1); // targetMonth의 값이 0~11 이니 + 1 해서 → 01~12
+            String formattedDay = String.format("%02d", day); 
+            // String.format("%02d", ...) > 2자리수 만들어주는 방법 01,02 등등..
             String fullDate = targetYear + "-" + formattedMonth + "-" + formattedDay;
+            // fullDate = 0000-00-00
 
             // 날짜에 해당하는 cash 내역 출력
             ArrayList<Cash> dayCashList = new ArrayList<>();
