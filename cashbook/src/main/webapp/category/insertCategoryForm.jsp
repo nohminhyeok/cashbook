@@ -3,7 +3,7 @@
 	String id = (String) session.getAttribute("adminId");
 
 	if(id == null) { // 로그인 상태가 아니면
-	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    response.sendRedirect("/cashbook/login&pw/loginForm.jsp");
 	    return;
 	}
 %>

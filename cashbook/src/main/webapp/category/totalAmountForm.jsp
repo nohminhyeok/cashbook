@@ -5,7 +5,7 @@
 <%
 	String id = (String) session.getAttribute("adminId");
 	if(id == null) {
-	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    response.sendRedirect("/cashbook/login&pw/loginForm.jsp");
 	    return;
 		// 세션에 admin 아이디가 없으면 로그인 페이지로
 	}

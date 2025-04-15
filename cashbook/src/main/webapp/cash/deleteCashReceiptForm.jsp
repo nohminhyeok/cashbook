@@ -2,7 +2,7 @@
 <%
 	String id = (String) session.getAttribute("adminId");
 	if(id == null) {
-	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    response.sendRedirect("/cashbook/login&pw/loginForm.jsp");
 	    return;
 	}
 	String filename = request.getParameter("filename");

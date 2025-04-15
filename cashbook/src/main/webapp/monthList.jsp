@@ -5,13 +5,13 @@
 <%
 	String id = (String) session.getAttribute("adminId");
 	if(id == null) {
-	    response.sendRedirect("/cashbook/loginForm.jsp");
+	    response.sendRedirect("/cashbook/login&pw/loginForm.jsp");
 	    return;
 		// 세션에 admin 아이디가 없으면 로그인 페이지로
 	}
 	
     Calendar firstDate = Calendar.getInstance();
-    // 현재 날짜에 대한 정보
+    // 오늘 기준으로 날짜에 대한 정보
 	
     String targetYear = request.getParameter("targetYear");
     String targetMonth = request.getParameter("targetMonth");
